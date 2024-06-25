@@ -1,18 +1,25 @@
 import express from "express";
 import BookController from "../controllers/book.controller.js";
+import { authorize } from '../util/auth.middleware.js'
 
 const router = express.Router();
 
-router.post("/", BookController.createBook);
-router.get("/", BookController.getBooks);
-router.get("/info", BookController.getBooksInfo);
+router.post("/", authorize('admin'),BookController.createBook);
+router.put("/", authorize('admin'),BookController.updateBook);
+router.get("/", authorize('admin', 'customer1'),BookController.getBooks);
+router.get("/info", authorize('admin'),BookController.getBooksInfo);
+router.get("/:id", authorize('admin', 'customer1'),BookController.getBook);
+router.delete("/:id", authorize('admin'),BookController.deleteBook);
 
-router.get("/:id", BookController.getBook);
-router.delete("/:id", BookController.deleteBook);
-router.put("/", BookController.updateBook);
+router.post("/info", authorize('admin'), BookController.createBookInfo);
+router.put("/info", authorize('admin'), BookController.updateBookInfo);
+router.delete("/info/:id", authorize('admin'), BookController.deleteBookInfo);
 
-router.post("/info", BookController.createBookInfo);
-router.put("/info", BookController.updateBookInfo);
-router.delete("/info/:id", BookController.deleteBookInfo);
+router.post("/info/:id/evaluation", authorize('admin','customer1') ,BookController.createBookEvalution);
+router.delete('/info/:id/evaluation/:index',authorize('admin'), BookController.deleteBookEvaluation);
+
+
+
+
 
 export default router;

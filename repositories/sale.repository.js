@@ -3,6 +3,8 @@ import Sale from "../models/sale.model.js";
 import Book from "../models/book.model.js";
 import Client from "../models/client.model.js";
 
+
+
 async function insertSale(sale) {
     try {
         return await Sale.create(sale);
@@ -30,15 +32,17 @@ async function getSales() {
 
 async function getSalesByBookId(bookId) {
     try {
-        return await Sale.findAll(
-            {
+        return await Sale.findAll({
                 where: {
                     bookId
                 },
-                include: [
-                    {
-                        model: Client
-                    }
+                include: [ {
+                        model: Book
+                 },
+                 {
+                    model: Client,
+                    attributes: { exclude: ['clientId', 'password'] }
+                  }
                 ]
             }
         );
@@ -50,14 +54,30 @@ async function getSalesByBookId(bookId) {
 async function getSalesByAuthorId(authorId) {
     try {
         return await Sale.findAll({
-            include: [
-                {
+            include: [ {
                     model: Book,
                     where: {
                         authorId
                     }
-                }
-            ]
+            },
+            {model: Client,  attributes: { exclude: ['clientId', 'password'] } }
+           ]
+        });
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getSalesByClientId(clientId) {
+    try {
+        return await Sale.findAll({
+            where: {
+                clientId
+            },
+            include: [{
+                    model: Client,
+                    attributes: { exclude: ['clientId', 'password'] }
+            }]
         });
     } catch (err) {
         throw err;
@@ -66,7 +86,16 @@ async function getSalesByAuthorId(authorId) {
 
 async function getSale(id) {
     try {
-        return await Sale.findByPk(id);
+        //return await Sale.findByPk(id); 
+        return await Sale.findAll({
+            where: {
+                saleId: id
+            },
+            include: [{
+                    model: Client,
+                    attributes: { exclude: ['clientId', 'password'] }
+            }]
+        });
     } catch (err) {
         throw err;
     }
@@ -109,6 +138,7 @@ export default {
     getSales,
     getSalesByBookId,
     getSalesByAuthorId,
+    getSalesByClientId,
     getSale,
     updateSale,
     deleteSale

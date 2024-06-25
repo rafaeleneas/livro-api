@@ -15,6 +15,11 @@ async function getBooks() {
     return await BookRepository.getBooks();
 }
 
+async function getBooksByAuthorId(authorId) {
+  
+    return await BookRepository.getBooksByAuthorId(authorId);
+}
+
 async function getBook(id) {
     return await BookRepository.getBook(id);
 }
@@ -46,17 +51,29 @@ async function getBookInfo(bookInfo) {
 
 async function getBooksInfo() {
     return await BookInfoRepository.getBooksInfo();
-    //const books = await BookInfoRepository.getBooksInfo();  
-    //return books;
 }
 
 async function updateBookInfo(bookInfo) {
-    await BookInfoRepository.updateBookInfo(bookInfo);
+    return await BookInfoRepository.updateBookInfo(bookInfo);
+}
+
+async function deleteBookInfo(bookInfo) {
+    return await BookInfoRepository.deleteBookInfo(bookInfo);
+}
+
+//evaluation
+async function createBookEvaluation(bookId, bookEvaluation) {    
+    return await BookInfoRepository.createEvaluations(bookId, bookEvaluation);
+}
+
+async function deleteBookEvaluation(bookId, index) {
+    return await BookInfoRepository.deleteEvaluations(bookId, index);
 }
 
 export default {
     createBook,
     getBooks,
+    getBooksByAuthorId,
     getBook,
     deleteBook,
     updateBook,
@@ -64,5 +81,9 @@ export default {
     createBookInfo,
     getBookInfo,
     getBooksInfo,
-    updateBookInfo
+    updateBookInfo,
+    deleteBookInfo,
+
+    createBookEvaluation,
+    deleteBookEvaluation
 }

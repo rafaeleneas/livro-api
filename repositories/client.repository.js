@@ -49,10 +49,27 @@ async function updateClient(client) {
     }
 }
 
+async function getClientByEmailAndPassword (email, password) {
+    try{
+        const  client = await Client.findOne({
+            where: {
+              email:email,
+              password: password
+            }
+          })
+          return client;
+      }catch(err){
+        global.logger.error(`Error on authenticateClient: `)
+      }
+    
+  }
+
 export default {
     insertClient,
     getClients,
     getClient,
     updateClient,
-    deleteClient
+    deleteClient,
+
+    getClientByEmailAndPassword
 }

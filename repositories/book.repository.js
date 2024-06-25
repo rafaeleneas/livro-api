@@ -16,6 +16,18 @@ async function getBooks() {
     }
 }
 
+async function getBooksByAuthorId (authorId){
+    try {
+        return await Book.findAll({
+            where: {
+                authorId: authorId
+            }
+        });
+    } catch (err) {
+        throw err;
+    }
+}
+
 async function getBook(id) {
     try {
         return await Book.findByPk(id);
@@ -52,6 +64,7 @@ async function updateBook(book) {
 export default {
     insertBook,
     getBooks,
+    getBooksByAuthorId,
     getBook,
     updateBook,
     deleteBook

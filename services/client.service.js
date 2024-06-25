@@ -20,10 +20,17 @@ async function updateClient(client) {
     return await ClientRepository.updateClient(client);
 }
 
+async function authenticateClient (email, password) {
+    const client =await ClientRepository.getClientByEmailAndPassword(email, password);
+    return client;
+  }
+
 export default {
     createClient,
     getClients,
     getClient,
     deleteClient,
-    updateClient
+    updateClient,
+
+    authenticateClient
 }

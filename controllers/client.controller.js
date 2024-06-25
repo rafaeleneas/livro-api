@@ -19,6 +19,7 @@ async function getClients(req, res, next) {
         res.send(await ClientService.getClients());
         logger.info("GET /client");
     } catch (err) {
+        logger.info("GET /client");
         next(err);
     }
 }

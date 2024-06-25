@@ -1,5 +1,5 @@
 {
-  "name": "store-api",
+  "name": "livraria-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,7 +12,10 @@
   "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.19.2",
+    "express-validator": "^6.12.2",
+    "jest": "^27.2.4",
     "mongodb": "^3.7.4",
     "mongoose": "^5.13.22",
     "nodemon": "^3.1.1",

@@ -25,12 +25,19 @@ async function createSale(sale) {
     }
 }
 
-async function getSales(bookId, authorId) {
+async function getSales(bookId, authorId, clientId) {
+    logger.info("GET /sales1");
     if (bookId) {
+        logger.info("bookid");
         return await SaleRepository.getSalesByBookId(bookId);
     }
     if (authorId) {
+        logger.info("authorid");
         return await SaleRepository.getSalesByAuthorId(authorId);
+    }
+    if (clientId) {
+        logger.info("clientid");
+        return await SaleRepository.getSalesByClientId(clientId);
     }
     return await SaleRepository.getSales();
 }

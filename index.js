@@ -6,6 +6,8 @@ import authorsRouter from "./routes/author.route.js";
 import booksRouter from "./routes/book.route.js";
 import salesRouter from "./routes/sale.route.js";
 
+import { basicAuth } from './util/auth.middleware.js'
+
 const { combine, timestamp, label, printf } = winston.format;
 const myFormat = printf(({ level, message, label, timestamp }) => {
     return `${timestamp} [${label}] ${level} ${message}`;
@@ -26,6 +28,10 @@ global.logger = winston.createLogger({
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+// autenticação
+app.use(basicAuth)
+
 app.use("/client", clientsRouter);
 app.use("/author", authorsRouter);
 app.use("/book", booksRouter);
