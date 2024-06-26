@@ -29,6 +29,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// rotas públicas
+app.get('/', (req, res) => {
+    res.send('Bootcamp IGTI: Desenvolvedor Node JS - Desafio Final. Bem vindo à livraria-api.')
+  })
+
 // autenticação
 app.use(basicAuth)
 
