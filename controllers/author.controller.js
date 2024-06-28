@@ -7,7 +7,8 @@ async function createAuthor(req, res, next) {
             throw new Error("Name, Phone, Email e Address são obrigatórios.");
         }        
         author = await AuthorService.createAuthor(author);
-        res.send(author);
+        return res.status(201).send(author);
+        //return res.status(201).json(c)
         logger.info(`POST /author - ${JSON.stringify(author)}`);
     } catch (err) {
         next(err);
@@ -16,7 +17,7 @@ async function createAuthor(req, res, next) {
 
 async function getAuthors(req, res, next) {
     try {
-        res.send(await AuthorService.getAuthors());
+        res.status(200).send(await AuthorService.getAuthors());
         logger.info("GET /author");
     } catch (err) {
         next(err);
@@ -25,7 +26,7 @@ async function getAuthors(req, res, next) {
 
 async function getAuthor(req, res, next) {
     try {
-        res.send(await AuthorService.getAuthor(req.params.id));
+        res.status(200).send(await AuthorService.getAuthor(req.params.id));
         logger.info("GET /author");
     } catch (err) {
         next(err);
@@ -35,7 +36,7 @@ async function getAuthor(req, res, next) {
 async function deleteAuthor(req, res, next) {
     try {
         await AuthorService.deleteAuthor(req.params.id)
-        res.end();
+        res.status(200).end();
         logger.info("DELETE /author");
     } catch (err) {
         next(err);
@@ -49,7 +50,7 @@ async function updateAuthor(req, res, next) {
             throw new Error("Author ID, Name, Phone, Email  são obrigatórios.");
         }        
         author = await AuthorService.updateAuthor(author);
-        res.send(author);
+        res.status(201).send(author);
         logger.info(`PUT /author - ${JSON.stringify(author)}`);
     } catch (err) {
         next(err);

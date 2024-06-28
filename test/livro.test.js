@@ -5,175 +5,175 @@ const request = supertest('http://localhost:3000')
 
 dotenv.config()
 
-describe.skip('/livro', () => {
-  test('POST - Criar um novo livro', async () => {
+describe.skip('/book', () => {
+  test('POST - Criar um novo book', async () => {
     const payloadRequest1 = {
-      nome: 'Livro Teste 1',
-      valor: 100.49,
-      autorId: 5,
-      estoque: 10
+      name: 'book Teste 1',
+      value: 100.49,
+      authorId: 5,
+      stock: 10
     }
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
-    expect(res.body.nome).toBe(payloadRequest1.nome)
-    expect(parseFloat(res.body.valor)).toBe(payloadRequest1.valor)
-    expect(res.body.autorId).toBe(payloadRequest1.autorId)
+    expect(res.body.name).toBe(payloadRequest1.name)
+    expect(parseFloat(res.body.value)).toBe(payloadRequest1.value)
+    expect(res.body.authorId).toBe(payloadRequest1.authorId)
   })
 
-  test('PUT - Atualizar um Livro', async () => {
-    const nome = 'Livro teste x'
-    const autorId = 5
+  test('PUT - Atualizar um book', async () => {
+    const name = 'book teste x'
+    const authorId = 5
     const payloadRequest1 = {
-      nome: nome,
-      valor: 100.25,
-      autorId: autorId,
-      estoque: 10
+      name: name,
+      value: 100.25,
+      authorId: authorId,
+      stock: 10
     }
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
-    payloadRequest1.livroId = res.body.livroId
-    payloadRequest1.nome = 'Livro Teste PUT'
-    payloadRequest1.autorId = 9
-    payloadRequest1.valor = 10.32
-    payloadRequest1.estoque = 0
+    payloadRequest1.bookId = res.body.bookId
+    payloadRequest1.name = 'book Teste PUT'
+    payloadRequest1.authorId = 9
+    payloadRequest1.value = 10.32
+    payloadRequest1.stock = 0
 
-    const res2 = await request.put('/livro')
+    const res2 = await request.put('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
 
     expect(res2.status).toBe(200)
-    // não deve se atualizar o nome do livro  e o autorId
-    expect(res2.body.nome).toBe(nome)
-    expect(res2.body.autorId).toBe(autorId)
+    // não deve se atualizar o name do book  e o authorId
+    expect(res2.body.name).toBe(name)
+    expect(res2.body.authorId).toBe(authorId)
 
-    expect(parseFloat(res2.body.valor)).toBe(10.32)
-    expect(res2.body.estoque).toBe(0)
+    expect(parseFloat(res2.body.value)).toBe(10.32)
+    expect(res2.body.stock).toBe(0)
   })
 
-  test('DELETE - Apagar um livro', async () => {
+  test('DELETE - Apagar um book', async () => {
     const payloadRequest1 = {
-      nome: 'Livro Teste 1',
-      valor: 100.49,
-      autorId: 5,
-      estoque: 10
+      name: 'book Teste 1',
+      value: 100.49,
+      authorId: 5,
+      stock: 10
     }
 
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
 
     expect(res.status).toBe(201)
 
-    const id = res.body.livroId
-    const res2 = await request.delete(`/livro/${id}`)
+    const id = res.body.bookId
+    const res2 = await request.delete(`/book/${id}`)
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
     expect(res2.status).toBe(200)
   })
 
   test('GET - Listar Livros', async () => {
-    const res = await request.get('/livro')
+    const res = await request.get('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
     expect(res.status).toBe(200)
     // const livros = res.body
-    // livros.forEach(livro => {
+    // livros.forEach(book => {
     //   expect(client.senha).toBe(undefined)
     // })
   })
 
   test('GET - Listar ByAutorId', async () => {
-    const autorId = 1
-    const res = await request.get(`/livro?autorId=${autorId}`)
+    const authorId = 1
+    const res = await request.get(`/book?authorId=${authorId}`)
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
     expect(res.status).toBe(200)
     const livros = res.body
-    livros.forEach(livro => {
-      expect(livro.autorId).toBe(autorId)
+    livros.forEach(book => {
+      expect(book.authorId).toBe(authorId)
     })
   })
 })
 
-describe.skip('/livro/info', () => {
+describe.skip('/book/info', () => {
   test('POST - Criar LivroInfo', async () => {
-    const nome = 'Livro teste LivroInfo'
-    const autorId = 5
+    const name = 'book teste LivroInfo'
+    const authorId = 5
     const payloadRequest1 = {
-      nome: nome,
-      valor: 24.50,
-      autorId: autorId,
-      estoque: 2
+      name: name,
+      value: 24.50,
+      authorId: authorId,
+      stock: 2
     }
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
-    const livroId = res.body.livroId
+    const bookId = res.body.bookId
 
     const payloadRequest2 = {
-      livroId,
-      descricao: 'Descrição do livro teste',
+      bookId,
+      descricao: 'Descrição do book teste',
       paginas: 42,
       editora: 'Editora Teste'
     }
 
-    const res2 = await request.post('/livro/info')
+    const res2 = await request.post('/book/info')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest2)
 
     expect(res2.status).toBe(201)
-    expect(res2.body.livroId).toBe(livroId)
+    expect(res2.body.bookId).toBe(bookId)
     expect(res2.body.descricao).toBe(payloadRequest2.descricao)
     expect(res2.body.paginas).toBe(payloadRequest2.paginas)
     expect(JSON.stringify(res2.body.avaliacoes)).toBe(JSON.stringify([]))
   })
 
   test('PUT - Atualizar LivroInfo', async () => {
-    const nome = 'Livro teste LivroInfo PUT'
-    const autorId = 5
+    const name = 'book teste LivroInfo PUT'
+    const authorId = 5
     const payloadRequest1 = {
-      nome: nome,
-      valor: 24.52,
-      autorId: autorId,
-      estoque: 3
+      name: name,
+      value: 24.52,
+      authorId: authorId,
+      stock: 3
     }
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
-    const livroId = res.body.livroId
+    const bookId = res.body.bookId
 
     const payloadRequest2 = {
-      livroId,
-      descricao: 'Descrição do livro teste',
+      bookId,
+      descricao: 'Descrição do book teste',
       paginas: 42,
       editora: 'Editora Teste'
     }
 
-    const res2 = await request.post('/livro/info')
+    const res2 = await request.post('/book/info')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest2)
     expect(res2.status).toBe(201)
 
     const payloadRequest3 = {
-      livroId,
+      bookId,
       descricao: 'Atualiza a descrição do teste',
       paginas: 51,
       editora: 'Editora Teste Atualizado',
       dumbfied: 'dumb'
     }
 
-    const res3 = await request.put('/livro/info')
+    const res3 = await request.put('/book/info')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest3)
     expect(res3.status).toBe(200)
 
-    expect(res3.body.livroId).toBe(livroId)
+    expect(res3.body.bookId).toBe(bookId)
     expect(res3.body.descricao).toBe(payloadRequest3.descricao)
     expect(res3.body.paginas).toBe(payloadRequest3.paginas)
     expect(res3.body.editora).toBe(payloadRequest3.editora)
@@ -181,72 +181,72 @@ describe.skip('/livro/info', () => {
   })
 
   test('DELETE - Remover LivroInfo', async () => {
-    const nome = 'Livro teste LivroInfo delete'
-    const autorId = 5
+    const name = 'book teste LivroInfo delete'
+    const authorId = 5
     const payloadRequest1 = {
-      nome: nome,
-      valor: 24.52,
-      autorId: autorId,
-      estoque: 3
+      name: name,
+      value: 24.52,
+      authorId: authorId,
+      stock: 3
     }
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
-    const livroId = res.body.livroId
+    const bookId = res.body.bookId
 
     const payloadRequest2 = {
-      livroId,
-      descricao: 'Descrição do livro teste',
+      bookId,
+      descricao: 'Descrição do book teste',
       paginas: 42,
       editora: 'Editora Teste'
     }
 
-    const res2 = await request.post('/livro/info')
+    const res2 = await request.post('/book/info')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest2)
     expect(res2.status).toBe(201)
 
-    const res3 = await request.delete(`/livro/info/${livroId}`)
+    const res3 = await request.delete(`/book/info/${bookId}`)
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
     expect(res3.status).toBe(200)
   })
 })
 
-describe.skip('/livro/avaliacao', () => {
-  test('create livro review', async () => {
+describe.skip('/book/avaliacao', () => {
+  test('create book review', async () => {
     const payloadRequest1 = {
-      nome: 'Livro teste Livro Rewiew',
-      valor: 24.50,
-      autorId: 5,
-      estoque: 2
+      name: 'book teste book Rewiew',
+      value: 24.50,
+      authorId: 5,
+      stock: 2
     }
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
-    const livroId = res.body.livroId
+    const bookId = res.body.bookId
 
     const payloadRequest2 = {
-      livroId,
-      descricao: 'Descrição do livro teste',
+      bookId,
+      descricao: 'Descrição do book teste',
       paginas: 42,
       editora: 'Editora Teste'
     }
 
-    const res2 = await request.post('/livro/info')
+    const res2 = await request.post('/book/info')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest2)
     expect(res2.status).toBe(201)
 
     const payloadRequest3 = {
-      nome: 'payload request3',
+      name: 'payload request3',
       nota: 5,
       avaliacao: 'teste'
     }
 
-    const res3 = await request.post(`/livro/${livroId}/avaliacao`)
+    const res3 = await request.post(`/book/${bookId}/avaliacao`)
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest3)
     expect(res3.status).toBe(201)

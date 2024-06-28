@@ -31,7 +31,7 @@ describe.skip('/cliente', () => {
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
-    payloadRequest1.autorId = res.body.autorId
+    payloadRequest1.authorId = res.body.authorId
     payloadRequest1.name = 'author 1 PUT'
     payloadRequest1.email = 'teste2@gmail.com'
     payloadRequest1.phone = '99-99999-9992'
@@ -57,7 +57,7 @@ describe.skip('/cliente', () => {
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
-    const id = res.body.autorId
+    const id = res.body.authorId
     const res2 = await request.delete(`/author/${id}`)
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
 

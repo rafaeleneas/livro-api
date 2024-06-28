@@ -25,7 +25,7 @@ async function createBook(req, res, next) {
         //    throw new Error("Name, Description, Value, Stock e author ID são obrigatórios.");
         //}        
         book = await BookService.createBook(book);
-        res.send(book);
+        res.status(201).send(book);
         logger.info(`POST /book - ${JSON.stringify(book)}`);
     } catch (err) {
         next(err);
@@ -41,7 +41,7 @@ async function getBooks(req, res, next) {
             logger.info("GET /book1");
             return;
         }
-        res.send(await BookService.getBooks());
+        res.status(200).send(await BookService.getBooks());
         logger.info("GET /book");
     } catch (err) {
         next(err);
@@ -50,7 +50,7 @@ async function getBooks(req, res, next) {
 
 async function getBook(req, res, next) {
     try {
-        res.send(await BookService.getBook(req.params.id));
+        res.status(200).send(await BookService.getBook(req.params.id));
         logger.info("GET /book");
     } catch (err) {
         next(err);
@@ -60,7 +60,7 @@ async function getBook(req, res, next) {
 async function deleteBook(req, res, next) {
     try {
         await BookService.deleteBook(req.params.id)
-        res.end();
+        res.status(200).end();
         logger.info("DELETE /book");
     } catch (err) {
         next(err);
@@ -90,7 +90,7 @@ async function updateBook(req, res, next) {
             throw new Error("Book ID, Name, Description, Value, Stock e author ID são obrigatórios.");
         }        
         book = await BookService.updateBook(book);
-        res.send(book);
+        res.status(201).send(book);
         logger.info(`PUT /book - ${JSON.stringify(book)}`);
     } catch (err) {
         next(err);
@@ -123,7 +123,7 @@ async function createBookInfo(req, res, next) {
         await BookService.createBookInfo(bookInfo);
         //res.end();
         logger.info(`POST /book 1/info - ${JSON.stringify(bookInfo)}`);        
-        return res.status(200).json(bookInfo)
+        return res.status(201).json(bookInfo)
     } catch (err) {
         next(err);
     }
@@ -153,7 +153,7 @@ async function updateBookInfo(req, res, next) {
         await BookService.updateBookInfo(bookInfo);
         //res.end();
         logger.info(`PUT /book/info - ${JSON.stringify(bookInfo)}`);    
-        return res.status(200).json(bookInfo)    
+        return res.status(201).json(bookInfo)    
     } catch (err) {
         next(err);
     }
@@ -162,7 +162,7 @@ async function updateBookInfo(req, res, next) {
 async function getBooksInfo(req, res, next) {
     try {
         logger.info("GET /book /info inicio...");
-        res.send(await BookService.getBooksInfo() ) ;      
+        res.status(200).send(await BookService.getBooksInfo() ) ;      
         logger.info("GET /book/info");
     } catch (err) {
         next(err);
@@ -171,7 +171,7 @@ async function getBooksInfo(req, res, next) {
 
 async function deleteBookInfo(req, res, next) {
     try {
-        res.send(await BookService.deleteBookInfo(parseInt(req.params.id)));
+        res.status(200).send(await BookService.deleteBookInfo(parseInt(req.params.id)));
         logger.info("DELETE /book/info");
     } catch (err) {
         next(err);
@@ -203,7 +203,7 @@ async function createBookEvalution(req, res, next) {
         const bookInfo = await BookService.createBookEvaluation (req.params.id, evalutaion);
         //res.end();
         logger.info(`POST /book/info/evaluation - ${JSON.stringify(bookInfo)}`);        
-        return res.status(200).json(bookInfo)
+        return res.status(201).json(bookInfo)
     } catch (err) {
         next(err);
     }
@@ -211,7 +211,7 @@ async function createBookEvalution(req, res, next) {
 
 function deleteBookEvaluation(req, res, next) {
     try {
-        res.send(BookService.deleteBookEvaluation(parseInt(req.params.id), parseInt(req.params.index)));
+        res.status(200).send(BookService.deleteBookEvaluation(parseInt(req.params.id), parseInt(req.params.index)));
         logger.info("DELETE /book/info/evaluation");
     } catch (err) {
         next(err);

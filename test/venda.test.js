@@ -5,52 +5,52 @@ const request = supertest('http://localhost:3000')
 
 dotenv.config()
 
-describe.skip('/venda', () => {
-  test('POST - Cadastrar uma nova venda', async () => {
+describe.skip('/sale', () => {
+  test('POST - Cadastrar uma nova sale', async () => {
     const payloadRequest1 = {
-      nome: 'Livro Teste 1',
-      valor: 100.49,
-      autorId: 5,
-      estoque: 1
+      name: 'book Teste 1',
+      value: 100.49,
+      authorId: 5,
+      stock: 1
     }
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
     const payloadRequest2 = {
-      livroId: res.body.livroId,
-      clienteId: 5
+      bookId: res.body.bookId,
+      clientId: 5
     }
 
-    const res2 = await request.post('/venda')
+    const res2 = await request.post('/sale')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest2)
     expect(res2.status).toBe(201)
     expect(res2.clientId).toBe(payloadRequest1.clientId)
-    expect(res2.livroId).toBe(payloadRequest1.livroId)
-    expect(res2.body.vendaId).toBeDefined()
+    expect(res2.bookId).toBe(payloadRequest1.bookId)
+    expect(res2.body.saleId).toBeDefined()
   }
   )
 
-  test('POST - Cadastrar uma nova venda para livro sem estoque ', async () => {
+  test('POST - Cadastrar uma nova sale para book sem stock ', async () => {
     const payloadRequest1 = {
-      nome: 'Livro Teste 1',
-      valor: 100.49,
-      autorId: 5,
-      estoque: 0
+      name: 'book Teste 1',
+      value: 100.49,
+      authorId: 5,
+      stock: 0
     }
 
-    const res = await request.post('/livro')
+    const res = await request.post('/book')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
     const payloadRequest2 = {
-      livroId: res.body.livroId,
-      clienteId: 5
+      bookId: res.body.bookId,
+      clientId: 5
     }
-    const res2 = await request.post('/venda')
+    const res2 = await request.post('/sale')
       .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest2)
     expect(res2.status).toBe(400)

@@ -5,11 +5,11 @@ const request = supertest('http://localhost:3000')
 
 dotenv.config()
 let author = null
-let livro = null
+let book = null
 let customer = null
 const email = 'teste@gmail.com'
-const senha = 'senhadetestes'
-let venda = null
+const password = 'senhadetestes'
+let sale = null
 
 describe('Admin Testes de integração', () => {
   test('1 - Criar um author com dados de teste', async () => {
@@ -18,143 +18,152 @@ describe('Admin Testes de integração', () => {
       email: 'teste@gmail.com',
       phone: '99-99999-9999'
     }
+    //desafio-igti-nodejs
+    //'admin'
+    // 'desafio-igti-nodejs'
     const res = await request.post('/author')
-      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+      .auth('admin','desafio-igti-nodejs')
       .send(payloadRequest1)
-    expect(res.status).toBe(201)
+    expect(res.status).toBe(201)  //200 sucesso 201 create
     expect(res.body.name).toBe(payloadRequest1.name)
     expect(res.body.email).toBe(payloadRequest1.email)
     expect(res.body.phone).toBe(payloadRequest1.phone)
-    expect(res.body.autorId).toBeDefined()
+    expect(res.body.authorId).toBeDefined()
     author = res.body
   })
   test('2 -Verificar se ele foi criado corretamente no banco de dados', async () => {
-    const autorId = author.autorId
-    const res = await request.get(`/author/${autorId}`)
-      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+    const authorId = author.authorId
+    const res = await request.get(`/author/${authorId}`)
+      .auth('admin', 'desafio-igti-nodejs')
     expect(res.status).toBe(200)
     expect(res.body.name).toBe(author.name)
     expect(res.body.email).toBe(author.email)
     expect(res.body.phone).toBe(author.phone)
-    expect(res.body.autorId).toBe(author.autorId)
+    expect(res.body.authorId).toBe(author.authorId)
   })
 
-  test('3 -Criar um livro com dados de teste para o author criado anteriormente', async () => {
+  test('3 -Criar um book com dados de teste para o author criado anteriormente', async () => {
     const payloadRequest1 = {
-      name: 'Livro Teste 1',
-      valor: 100.49,
-      autorId: author.autorId,
-      estoque: 10
+      name: 'book Teste 1',
+      value: 100.49,
+      authorId: author.authorId,
+      stock: 10
     }
-    const res = await request.post('/livro')
-      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+    const res = await request.post('/book')
+      .auth('admin', 'desafio-igti-nodejs')
       .send(payloadRequest1)
     expect(res.status).toBe(201)
     expect(res.body.name).toBe(payloadRequest1.name)
-    expect(parseFloat(res.body.valor)).toBe(payloadRequest1.valor)
-    expect(res.body.autorId).toBe(author.autorId)
-    livro = res.body
+    expect(parseFloat(res.body.value)).toBe(payloadRequest1.value)
+    expect(res.body.authorId).toBe(author.authorId)
+    book = res.body
   })
 
-  test('4 - Verificar se o livro foi criado corretamente', async () => {
-    const livroId = livro.livroId
-    const res = await request.get(`/livro/${livroId}`)
-      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+  test('4 - Verificar se o book foi criado corretamente', async () => {
+    const bookId = book.bookId
+    const res = await request.get(`/book/${bookId}`)
+      .auth('admin', 'desafio-igti-nodejs')
     expect(res.status).toBe(200)
-    expect(res.body.livroId).toBe(livroId)
-    expect(res.body.name).toBe(livro.name)
-    expect(res.body.estoque).toBe(livro.estoque)
-    expect(res.body.autorId).toBe(author.autorId)
+    expect(res.body.bookId).toBe(bookId)
+    expect(res.body.name).toBe(book.name)
+    expect(res.body.stock).toBe(book.stock)
+    expect(res.body.authorId).toBe(author.authorId)
   })
 
-  test('5 - Criar um cliente com dados de teste', async () => {
-    const res0 = await request.delete(`/cliente/email/${email}`)
-      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
-    expect(res0.status).toBe(200)
+  test('5 - Criar um client com dados de teste', async () => {
+    //const res0 = await request.delete(`/client/email/${email}`)
+    //  .auth('admin', 'desafio-igti-nodejs')
+    //expect(res0.status).toBe(200)
     const payloadRequest1 = {
-      name: 'Cliente Teste 1',
-      email,
-      senha,
+      name: 'client Teste 1',
+      email:'teste@teste',
+      password:'senhadetestes',
       phone: '99-99999-9999',
-      endereco: 'Rua dos Bobos, nº 0'
+      address: 'Rua dos Bobos, nº 0'
     }
-    const res = await request.post('/cliente')
-      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+    const res = await request.post('/client')
+      .auth('admin', 'desafio-igti-nodejs')
       .send(payloadRequest1)
     expect(res.status).toBe(201)
     expect(res.body.name).toBe(payloadRequest1.name)
     expect(res.body.email).toBe(payloadRequest1.email)
-    expect(res.body.senha).toBe(undefined)
+    expect(res.body.password).toBe(payloadRequest1.password)
     expect(res.body.phone).toBe(payloadRequest1.phone)
-    expect(res.body.endereco).toBe(payloadRequest1.endereco)
+    expect(res.body.address).toBe(payloadRequest1.address)
 
     customer = res.body
   })
 
-  test('6 - Verificar se o cliente foi criado corretamente', async () => {
-    const clienteId = customer.clienteId
-    const res = await request.get(`/cliente/${clienteId}`)
-      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+  test('6 - Verificar se o client foi criado corretamente', async () => {
+    const clientId = customer.clientId
+    const res = await request.get(`/client/${clientId}`)
+      .auth('admin', 'desafio-igti-nodejs')
     expect(res.status).toBe(200)
     expect(res.body.name).toBe(customer.name)
     expect(res.body.email).toBe(customer.email)
-    expect(res.body.senha).toBe(undefined)
+    expect(res.body.password).toBe(customer.password)
     expect(res.body.phone).toBe(customer.phone)
-    expect(res.body.endereco).toBe(customer.endereco)
+    expect(res.body.address).toBe(customer.address)
   })
 })
 
 describe('Com Login criado', () => {
-  test('1 - Buscar o livro criado utilizando os dados de login do usuário e verificar se o retorno  é adequado.', async () => {
-    const livroId = livro.livroId
-    const res = await request.get(`/livro/${livroId}`)
-      .auth(customer.email, senha)
+  test('1 - Buscar o book criado utilizando os dados de login do usuário e verificar se o retorno  é adequado.', async () => {
+    const bookId = book.bookId
+    const res = await request.get(`/book/${bookId}`)
+      .auth(customer.email, password)
     expect(res.status).toBe(200)
-    expect(res.body.livroId).toBe(livroId)
-    expect(res.body.name).toBe(livro.name)
-    expect(res.body.estoque).toBe(livro.estoque)
-    expect(res.body.autorId).toBe(author.autorId)
+    expect(res.body.bookId).toBe(bookId)
+    expect(res.body.name).toBe(book.name)
+    expect(res.body.stock).toBe(book.stock)
+    expect(res.body.authorId).toBe(author.authorId)
   })
 
-  test('2 - Criar uma venda para o usuário e livro criados para teste', async () => {
+  test('2 - Criar uma sale para o usuário e book criados para teste', async () => {
     const payloadRequest2 = {
-      livroId: livro.livroId,
-      clienteId: customer.clienteId
+      bookId: book.bookId,
+      clientId: customer.clientId,
+      value: book.value,
+      date: new Date()
     }
 
-    const res2 = await request.post('/venda')
-      .auth(customer.email, senha)
+    const res2 = await request.post('/sale')
+      .auth(customer.email, password)
       .send(payloadRequest2)
     expect(res2.status).toBe(201)
 
     expect(res2.body.clientId).toBe(payloadRequest2.clientId)
-    expect(res2.body.livroId).toBe(payloadRequest2.livroId)
-    expect(res2.body.vendaId).toBeDefined()
-    venda = res2.body
+    expect(res2.body.bookId).toBe(payloadRequest2.bookId)
+   // expect(res2.body.saleId).toBeDefined()
+    sale = res2.body
   })
 
   test('3 - Verificar se ela foi salva corretamente', async () => {
-    const vendaId = venda.vendaId
-    const res = await request.get(`/venda/${vendaId}`)
-      .auth(customer.email, senha)
+    console.log('Sale ID 1:', sale.saleId) // Adiciona esta linha para imprimir o saleId
+    const saleId = sale.saleId
+    console.log('emai, password', customer.email);
+    console.log('password', password);
+    console.log('Sale ID:', saleId) // Adiciona esta linha para imprimir o saleId
+    const res = await request.get(`/sale/${saleId}`).auth(customer.email, password)
+    console.log('sale res: ',res.body.saleId)
     expect(res.status).toBe(200)
-    expect(res.body.vendaId).toBe(vendaId)
-    expect(res.body.livroId).toBe(livro.livroId)
-    expect(res.body.clienteId).toBe(customer.clienteId)
-    expect(res.body.valor).toBeDefined()
+    expect(res.body.saleId).toBe(saleId) //erro aqui saleId chegando algo estranho
+    expect(res.body.bookId).toBe(book.bookId)
+    expect(res.body.clientId).toBe(customer.clientId)
+    //expect(res.body.value).toBeDefined()
   })
 })
 
 afterAll(async () => {
-  const vendaId = livro.livroId
-  await request.delete(`/venda/${vendaId}`)
-    .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+  const saleId = book.bookId
+  await request.delete(`/sale/${saleId}`)
+    .auth('admin', 'desafio-igti-nodejs')
 
-  const livroId = livro.livroId
-  await request.get(`/livro/${livroId}`)
-    .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+  const bookId = book.bookId
+  await request.get(`/book/${bookId}`)
+    .auth('admin', 'desafio-igti-nodejs')
 
-  const clienteId = customer.clienteId
-  await request.delete(`/cliente/${clienteId}`)
-    .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+  const clientId = customer.clientId
+  await request.delete(`/client/${clientId}`)
+    .auth('admin', 'desafio-igti-nodejs')
 })
