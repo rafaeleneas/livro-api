@@ -76,8 +76,8 @@ describe('Admin Testes de integração', () => {
     //expect(res0.status).toBe(200)
     const payloadRequest1 = {
       name: 'client Teste 1',
-      email:'teste@teste',
-      password:'senhadetestes',
+      email:email,
+      password: password,
       phone: '99-99999-9999',
       address: 'Rua dos Bobos, nº 0'
     }

@@ -33,7 +33,7 @@ async function deleteBook(id) {
 }
 
 async function updateBook(book) {
-    if (await AuthorRepository.getAuthor(book.author_id)) {        
+    if (await AuthorRepository.getAuthor(book.authorId)) {        
         return await BookRepository.updateBook(book);
     }
     throw new Error("O author_id informado não existe.");

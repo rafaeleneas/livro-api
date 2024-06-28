@@ -1,4 +1,5 @@
 import AuthorRepository from "../repositories/author.repository.js";
+import bookRepository from "../repositories/book.repository.js";
 
 async function createAuthor(author) {
     return await AuthorRepository.insertAuthor(author);
@@ -13,12 +14,18 @@ async function getAuthor(id) {
 }
 
 async function deleteAuthor(id) {
+    const book = bookRepository.getBooksByAuthorId(id);
+    if (book) {
+        throw new Error("Author has books");
+    }
+
     await AuthorRepository.deleteAuthor(id);
 }
 
 async function updateAuthor(author) {
     return await AuthorRepository.updateAuthor(author);
 }
+
 
 export default {
     createAuthor,

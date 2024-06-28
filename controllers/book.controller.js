@@ -86,9 +86,9 @@ async function updateBook(req, res, next) {
         }
 
         let book = req.body;
-        if (!book.bookId || !book.name || !book.value || !book.stock || !book.author_id) {
-            throw new Error("Book ID, Name, Description, Value, Stock e author ID são obrigatórios.");
-        }        
+        //if (!book.bookId || !book.name || !book.value || !book.stock || !book.author_id) {
+        //    throw new Error("Book ID, Name, Description, Value, Stock e author ID são obrigatórios.");
+       // }        
         book = await BookService.updateBook(book);
         res.status(201).send(book);
         logger.info(`PUT /book - ${JSON.stringify(book)}`);
